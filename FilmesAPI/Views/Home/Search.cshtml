@@ -1,0 +1,27 @@
+﻿@model FilmesAPI.Models.Root
+
+<h1 class="text-center text-white">Filmes</h1>
+<br />
+<br />
+
+
+<div class="container">
+    <div class="d-flex flex-wrap">
+        @foreach (var item in Model.results)
+        {
+            <div class="card m-2" style="width: 25rem;">
+                <img class="card-img-top" src="https://image.tmdb.org/t/p/w500/@item.poster_path" alt="Poster do Filme">
+                <div class="card-body">
+                    <h3 class="card-title m-2">@item.title</h3>
+                    
+
+
+                </div>
+                <div class="d-inline m-3">
+                    <button type="button" class="btn btn-dark">Detalhes</button>
+                    
+                </div>
+            </div>
+        }
+    </div>
+</div>
