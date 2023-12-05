@@ -8,53 +8,70 @@ namespace FilmesAPI.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApiKeyService _apiKeyService;
+
+        public HomeController(ApiKeyService apiKeyService)
+        {
+            _apiKeyService = apiKeyService;
+        }
+
+        private async Task<RestResponse> GetApiResponse(string url)
+        {
+            var client = new RestClient();
+            var request = new RestRequest(url, Method.Get);
+            request.AddParameter("api_key", _apiKeyService.ApiKey);
+            request.AddParameter("access_token", _apiKeyService.Token);
+            request.AddParameter("language", "pt-BR");
+
+            return await client.ExecuteAsync(request);
+        }
+
         public async Task<IActionResult> Index()
         {
             try
             {
-                string apiKey = "4605392c2512f145b87dc33b6882bab5";
-                var client = new RestClient();
-                var request = new RestRequest($"https://api.themoviedb.org/3/movie/top_rated?api_key={apiKey}&language=pt-BR", Method.Get);
+                var popularResponse = await GetApiResponse("https://api.themoviedb.org/3/movie/popular");
+                var nowPlayingResponse = await GetApiResponse("https://api.themoviedb.org/3/movie/now_playing");
+                var topRatedResponse = await GetApiResponse("https://api.themoviedb.org/3/movie/top_rated");
 
-                RestResponse response = await client.ExecuteAsync(request);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                if (popularResponse.StatusCode == System.Net.HttpStatusCode.OK &&
+                    nowPlayingResponse.StatusCode == System.Net.HttpStatusCode.OK &&
+                    topRatedResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    Models.Root listaDeFilmes = JsonConvert.DeserializeObject<Models.Root>(response.Content);
-                    return View(listaDeFilmes);
+                    Models.Root popularFilmes = JsonConvert.DeserializeObject<Models.Root>(popularResponse.Content);
+                    Models.Root nowPlayingFilmes = JsonConvert.DeserializeObject<Models.Root>(nowPlayingResponse.Content);
+                    Models.Root topRatedFilmes = JsonConvert.DeserializeObject<Models.Root>(topRatedResponse.Content);
+
+                    ViewData["PopularFilmes"] = popularFilmes.results;
+                    ViewData["NowPlayingFilmes"] = nowPlayingFilmes.results;
+                    ViewData["TopRatedFilmes"] = topRatedFilmes.results;
+
+                    return View();
                 }
                 else
                 {
-                   
                     return View("Erro");
                 }
             }
             catch (Exception ex)
             {
-                
                 Console.WriteLine($"Erro ao obter a lista de filmes: {ex.Message}");
-
-                
                 return View("Erro");
             }
         }
 
-
-
         public async Task<IActionResult> Search(string searchString)
         {
-
             try
             {
-                // Verifica se a string de pesquisa não é nula ou vazia antes de fazer a chamada à API
                 if (!string.IsNullOrWhiteSpace(searchString))
                 {
-                    string apiKey = "4605392c2512f145b87dc33b6882bab5";
                     var client = new RestClient();
                     var request = new RestRequest("https://api.themoviedb.org/3/search/movie", Method.Get);
-                    request.AddParameter("api_key", apiKey);
-                    request.AddParameter("query", searchString);
+                    request.AddParameter("api_key", _apiKeyService.ApiKey);
+                    request.AddParameter("access_token", _apiKeyService.Token);
                     request.AddParameter("language", "pt-BR");
+                    request.AddParameter("query", searchString);
 
                     RestResponse response = await client.ExecuteAsync(request);
 
@@ -62,38 +79,53 @@ namespace FilmesAPI.Controllers
                     {
                         var resultado = JsonConvert.DeserializeObject<Models.Root>(response.Content);
 
-                        
                         ViewData["searchString"] = searchString;
+
                         return View(resultado);
                     }
                     else
                     {
-                        
                         return View("Erro");
                     }
                 }
 
-               
                 return View("Erro");
             }
             catch (Exception ex)
             {
-               
                 Console.WriteLine($"Erro ao obter a lista de filmes: {ex.Message}");
-
-                
                 return View("Erro");
             }
-
-            
         }
 
-        public async Task<IActionResult> Details() 
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            try
+            {
+                var client = new RestClient();
+                var request = new RestRequest($"https://api.themoviedb.org/3/movie/{id}", Method.Get);
+                request.AddParameter("api_key", _apiKeyService.ApiKey);
+                request.AddParameter("access_token", _apiKeyService.Token);
+                request.AddParameter("language", "pt-BR");
+
+                RestResponse response = await client.ExecuteAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var resultado = JsonConvert.DeserializeObject<Models.Root>(response.Content);
+
+                    return View(resultado);
+                }
+                else
+                {
+                    return View("Erro");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao obter detalhes do filme: {ex.Message}");
+                return View("Erro");
+            }
         }
-
-
-
     }
 }

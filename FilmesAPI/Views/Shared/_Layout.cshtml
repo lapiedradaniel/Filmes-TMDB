@@ -7,51 +7,80 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FilmesAPI.styles.css" asp-append-version="true" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+
+    <script src="main.js"></script>
 </head>
-<body style="background-color:black">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bolder " asp-area="" asp-controller="Home" asp-action="Index">Daniel Netflix</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item fw-bolder">
-                            <a class="nav-link text-dark " asp-area="" asp-controller="Home" asp-action="Index">Filmes</a>
-                        </li>
-                       
-                       @* <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Filmes" asp-action="Index">Filmes</a>
-                        </li>*@
-
-                    </ul>
-
-                    <form class="navbar-form navbar-right me-5" asp-controller="Home" asp-action="Search" method="get">
-                        <div class="form-group">
-                            <input type="text" class="form-control fw-bolder" placeholder="Procurar Filme" name="searchString" value="@ViewData["searchString"]">
-                        </div>
-                    </form>
-                </div>
+<body>
+    <div class="wrapper">
+        <!-- HEADER -->
+        <header>
+            <div class="netflixLogo">
+                <a id="logo" href="#home"><h5 class="Text-red">DanFlix</h5></a>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            <nav class="main-nav">
+                
+                <a  asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 
-    <footer class="border-top footer text-muted">
+                <a class="text-white" target="_blank" href="https://lapiedradaniel.github.io/Portifolio/">Portfolio</a>
+
+            </nav>
+            <form  class="navbar-form navbar-right me-5" asp-controller="Home" asp-action="Search" method="get">
+                <div class="d-flex justify-content-center">
+                    <div class="form-group">
+                        <input id="Pesquisa" type="text" class="form-control fw-bolder" placeholder="Procurar Filme" name="searchString" value="@ViewData["searchString"]">
+                    </div>
+                </div>
+            </form>
+
+        </header>
+        <br />
+        <!-- END OF HEADER -->
+
         <div class="container">
-            &copy; 2023 - FilmesAPI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <br />
+
+        <!-- LINKS -->
+        <section class="link">
+            <div class="logos">
+                <a href="#"><i class="fab fa-facebook-square fa-2x logo"></i></a>
+                <a href="#"><i class="fab fa-instagram fa-2x logo"></i></a>
+                <a href="#"><i class="fab fa-twitter fa-2x logo"></i></a>
+                <a href="#"><i class="fab fa-youtube fa-2x logo"></i></a>
+            </div>
+            <div class="sub-links">
+                <ul>
+                    <li><a href="#">Audio and Subtitles</a></li>
+                    <li><a href="#">Audio Description</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Gift Cards</a></li>
+                    <li><a href="#">Media Center</a></li>
+                    <li><a href="#">Investor Relations</a></li>
+                    <li><a href="#">Jobs</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Legal Notices</a></li>
+                    <li><a href="#">Corporate Information</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </section>
+        <!-- END OF LINKS -->
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy 1997-2018 Netflix, Inc.</p>
+            <p>Carlos Avila &copy 2018</p>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+      
+        @await RenderSectionAsync("Scripts", required: false)
+    </div>
 </body>
 </html>
