@@ -6,7 +6,8 @@
 
 <h1>Principais Características:</h1>
 
-Integração com a API TMDb: Utilizando a biblioteca RestSharp, a aplicação realiza chamadas à API TMDb para obter informações atualizadas sobre filmes em cartaz, filmes mais populares, e filmes mais bem avaliados. Isso permite que a aplicação mantenha-se dinâmica e forneça dados precisos aos usuários.
+<h3>Integração com a API TMDb:</h3>
+ Utilizando a biblioteca RestSharp, a aplicação realiza chamadas à API TMDb para obter informações atualizadas sobre filmes em cartaz, filmes mais populares, e filmes mais bem avaliados. Isso permite que a aplicação mantenha-se dinâmica e forneça dados precisos aos usuários.
 
 <h1>Design Responsivo:</h1>
  A interface da aplicação é projetada para ser responsiva, adaptando-se automaticamente a diferentes tamanhos de tela, proporcionando uma experiência de usuário consistente em dispositivos desktop, tablets e smartphones. Isso garante que os usuários possam acessar a aplicação de forma conveniente em qualquer dispositivo.
